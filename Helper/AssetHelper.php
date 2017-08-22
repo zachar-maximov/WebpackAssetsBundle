@@ -26,21 +26,21 @@ class AssetHelper
         $this->manifestPath = $manifestPath;
     }
 
-    public function getAssetUrl($bundle, $type='js')
+    public function getAssetUrl($bundle, $type='js', $throwOnEmpty = true)
     {
-        $publicPath = $this->getAssetVersion($bundle, $type);
+        $publicPath = $this->getAssetVersion($bundle, $type, $throwOnEmpty);
 
         return $publicPath;
     }
 
-    public function getAssetVersion($bundle, $type='js')
+    public function getAssetVersion($bundle, $type='js', $throwOnEmpty = true)
     {
         $this->loadManifest();
 
-        if (!isset($this->manifest[$bundle])) {
+        if (!isset($this->manifest[$bundle]) && $throwOnEmpty) {
             throw new \RuntimeException(sprintf('No bundle "%s" in the version manifest!', $bundle));
         }
-        if (!isset($this->manifest[$bundle][$type])) {
+        if (!isset($this->manifest[$bundle][$type]) && $throwOnEmpty) {
             throw new \RuntimeException(sprintf(
                 'No type "%s" for bundle "%s" in the version manifest!',
                 $type,
@@ -48,7 +48,8 @@ class AssetHelper
             ));
         }
 
-        return $this->manifest[$bundle][$type];
+        return isset($this->manifest[$bundle]) && isset($this->manifest[$bundle][$type]) ?
+            $this->manifest[$bundle][$type] : null;
     }
 
     private function loadManifest()

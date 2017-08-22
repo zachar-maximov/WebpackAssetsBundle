@@ -26,9 +26,9 @@ class WebpackAssetsExtension extends \Twig_Extension
         ];
     }
 
-    public function getAssetUrl($bundle, $type='js')
+    public function getAssetUrl($bundle, $type='js', $throwOnEmpty = true)
     {
-        return $this->assetHelper->getAssetUrl($bundle, $type);
+        return $this->assetHelper->getAssetUrl($bundle, $type, $throwOnEmpty);
     }
 
     /**
