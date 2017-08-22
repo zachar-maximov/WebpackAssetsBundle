@@ -37,10 +37,12 @@ class AssetHelper
     {
         $this->loadManifest();
 
-        if (!isset($this->manifest[$bundle]) && $throwOnEmpty) {
+        $hasNoBundle = !isset($this->manifest[$bundle]);
+        $hasNoType = !$hasNoBundle && isset($this->manifest[$bundle][$type]);
+        if ($hasNoBundle && $throwOnEmpty) {
             throw new \RuntimeException(sprintf('No bundle "%s" in the version manifest!', $bundle));
         }
-        if (!isset($this->manifest[$bundle][$type]) && $throwOnEmpty) {
+        if (!$hasNoType && $throwOnEmpty) {
             throw new \RuntimeException(sprintf(
                 'No type "%s" for bundle "%s" in the version manifest!',
                 $type,
@@ -48,7 +50,7 @@ class AssetHelper
             ));
         }
 
-        return isset($this->manifest[$bundle]) && isset($this->manifest[$bundle][$type]) ?
+        return $hasNoType?
             $this->manifest[$bundle][$type] : null;
     }
 
