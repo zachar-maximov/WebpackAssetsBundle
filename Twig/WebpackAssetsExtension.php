@@ -7,7 +7,7 @@ use ju1ius\WebpackAssetsBundle\Helper\AssetHelper;
 /**
  * @author ju1ius
  */
-class WebpackAssetsExtension extends \Twig_Extension
+class WebpackAssetsExtension extends \Twig\Extension\AbstractExtension
 {
     /**
      * @var \ju1ius\WebpackAssetsBundle\Helper\AssetHelper
@@ -22,7 +22,7 @@ class WebpackAssetsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('webpack_asset', [$this, 'getAssetUrl']),
+            new \Twig\TwigFunction('webpack_asset', [$this, 'getAssetUrl']),
         ];
     }
 
